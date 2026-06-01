@@ -10,11 +10,98 @@ execute:
   warning: false # use this to make sure warnings don't show upl
 ---
 
-# Set up
+# Setting up
 
 ```{r}
+#| label: loading-packages
 
-
+# read in packages
+library(tidyverse) # general use
+library(here) # file organization -- dont need...
+library(janitor) # cleaning data frames
+library(DHARMa) # for diagnostics
 
 ```
+
+```{r}
+#| label: reading-data
+
+# read in personal data to object from csv
+my_data <- read_csv("envs193ds-personal-data.csv")
+
+```
+
+
+# Cleaning and wrangling data
+
+```{r}
+#| label: wrangling-data
+
+# cleaned column names
+my_data <- my_data |> 
+  clean_names()
+
+# created new column: 1 if workout was a run, 0 if not
+my_data <- my_data |>
+  mutate(is_run = case_when(
+    workout_type == "Run" ~ 1, # run = 1
+    .default = 0               # all other workout types = 0
+  ))
+
+```
+
+
+# Fitting model
+
+```{r}
+#| label: model-glm
+
+# fitted generalized linear model
+# response: whether or not workout was a run (binary: 1/0)
+# predictor: sleep the previous night (hours)
+run_glm <- glm(
+  # formula: binary run outcome ~ sleep hours
+  is_run ~ sleep_hours,
+  # data: my_data data frame
+  data = my_data,
+  # binomial error distribution for binary response
+  family = binomial)
+
+```
+
+
+# Diagnostics
+
+```{r}
+#| label: diagnostics
+#| fig-height: 6
+#| fig-width: 8
+
+# simulated residuals from GLM for diagnostic plots
+run_simres <- simulateResiduals(run_glm)
+
+# plotted DHARMa diagnostics
+# left plot: KS test - do residuals follow uniform distribution?
+# right plot: residuals vs predicted values
+plot(run_simres)
+
+```
+
+
+# Coefficients
+```{r}
+#| label: coefficients
+
+# displayed model summary
+summary(run_glm)
+
+# exponentiated coefficients to get odds ratios
+# e.g. exp(coef) = odds ratio for 1 hr increase in sleep
+exp(coef(run_glm))
+
+# exponentiated confidence intervals
+exp(confint(run_glm))
+
+```
+
 
