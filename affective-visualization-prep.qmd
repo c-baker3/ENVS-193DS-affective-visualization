@@ -214,7 +214,7 @@ ggplot(my_data,
   scale_y_continuous(limits = c(0, 1),
                      breaks = c(0, 1)) +
   # relabeled axes and added title
-  labs(title = "More sleep is associated with higher probability of running the next day",
+  labs(title = "More sleep is associated with a higher probability of running the next day",
        x     = "Sleep the previous night (hours)",
        y     = "Probability of going on a run (1 = yes, 0 = no)") +
   # changed theme from default
