@@ -122,7 +122,9 @@ summary(run_mod)
 plogis(-8.7011)
 
 ```
-**Note**: inverse logit is 0.00016
+**Note**: 
+- inverse logit is 0.00016
+- The probability of going on a run if sleep duration is 0 hours is 0.00016??
 
 
 ## Calculate odds ratio 
@@ -134,10 +136,15 @@ plogis(-8.7011)
 gtsummary::tbl_regression(run_mod, exponentiate = TRUE)
 
 ```
-**Note**: odds ratio is 2.97 which is greater than 1 so increase
+**Note**: 
+- odds ratio is 2.97
+- 2.97 > 1 so the probability of going on a run increases by a factor of 2.97 with every 1 hour increase in sleep
+
+**Summary**: 
+- For every 1 hour increase in sleep, the the odds of going on a run increase by a factor of 2.97 (95% CI: [1.37, 9.40], p = 0.021, ⍺ = 0.05). ?? NOT SIGNIF THO
 
 
-## Other way to calculate?
+## Other way to calculate -- remove?
 ```{r}
 #| label: coefficients
 
@@ -146,8 +153,6 @@ gtsummary::tbl_regression(run_mod, exponentiate = TRUE)
 exp(coef(run_mod))
 
 ```
-
-**Note**: CHECK. for every 1 hour increase in sleep, the the odds of going on a run increase by a factor of 2.97 (95% CI: [X, X], p = X, ⍺ = 0.05).
 
 
 # Looking at the model predictions
@@ -180,7 +185,7 @@ ggpredict(run_mod,
 #| fig-height: 6
 #| fig-width: 8
 
-# generated model predictions across range of sleep values
+# generated model predictions across range of sleep values in data set
 mod_preds <- ggpredict(run_mod,
                        terms = "sleep_hours [5:10 by = 1]")
 
@@ -209,9 +214,9 @@ ggplot(my_data,
   scale_y_continuous(limits = c(0, 1),
                      breaks = c(0, 1)) +
   # relabeled axes and added title
-  labs(title = "More sleep is associated with higher probability of a run",
+  labs(title = "More sleep is associated with higher probability of running the next day",
        x     = "Sleep the previous night (hours)",
-       y     = "Run (1 = yes, 0 = no)") +
+       y     = "Probability of going on a run (1 = yes, 0 = no)") +
   # changed theme from default
   theme_minimal() +
   # bolded title
