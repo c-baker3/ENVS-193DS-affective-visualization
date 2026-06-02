@@ -22,6 +22,7 @@ library(janitor) # cleaning data frames
 library(DHARMa) # for diagnostics
 library(ggeffects) # for ggpredict
 library(flextable) # for flextable
+library(gtsummary)
 
 ```
 
@@ -113,15 +114,36 @@ summary(run_mod)
 ```
 
 
+## Calculate inverse logit
+```{r}
+#| label: coefficients-b0
+
+# annotate 
+plogis(-8.7011)
+
+```
+**Note**: inverse logit is 0.00016
+
+
+## Calculate odds ratio 
+
+```{r}
+#| label: coefficients-b1
+
+# annotate 
+gtsummary::tbl_regression(run_mod, exponentiate = TRUE)
+
+```
+**Note**: odds ratio is 2.97 which is greater than 1 so increase
+
+
+## Other way to calculate?
 ```{r}
 #| label: coefficients
 
 # exponentiated coefficients to get odds ratios
 # e.g. exp(coef) = odds ratio for 1 hr increase in sleep
 exp(coef(run_mod))
-
-# exponentiated confidence intervals
-exp(confint(run_mod))
 
 ```
 
