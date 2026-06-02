@@ -118,11 +118,12 @@ summary(run_mod)
 ```{r}
 #| label: coefficients-b0
 
-# annotate 
+# calculated inverse logit  
 plogis(-8.7011)
 
 ```
 **Note**: 
+
 - inverse logit is 0.00016
 - The probability of going on a run if sleep duration is 0 hours is 0.00016??
 
@@ -132,16 +133,19 @@ plogis(-8.7011)
 ```{r}
 #| label: coefficients-b1
 
-# annotate 
-gtsummary::tbl_regression(run_mod, exponentiate = TRUE)
+# calculated odds ratio
+gtsummary::tbl_regression(run_mod, 
+                          exponentiate = TRUE)
 
 ```
-**Note**: 
+**Note**:
+
+- *results at top of this page*
 - odds ratio is 2.97
 - 2.97 > 1 so the probability of going on a run increases by a factor of 2.97 with every 1 hour increase in sleep
 
 **Summary**: 
-- For every 1 hour increase in sleep, the the odds of going on a run increase by a factor of 2.97 (95% CI: [1.37, 9.40], p = 0.021, ⍺ = 0.05). ?? NOT SIGNIF THO
+For every 1 hour increase in sleep, the the odds of going on a run increase by a factor of 2.97 (95% CI: [1.37, 9.40], p = 0.021, ⍺ = 0.05).
 
 
 ## Other way to calculate -- remove?
@@ -156,6 +160,7 @@ exp(coef(run_mod))
 
 
 # Looking at the model predictions
+
 - using probabilities to determine chance of getting certain outcome
 - line represents the probability of 1 (going on a run) actually occurring
 
